@@ -1,10 +1,10 @@
 import React from 'react';
-
+import Header from './layout/Header';
 function App() {
 
   return (
     <div className="min-h-screen bg-cyan-400 flex flex-col">
-      <h1 className='text-9xl font-bold text-orange-800'> initial project structure with Docker and React frontend setup</h1>
+      <Header />
 
     </div>
   );
