@@ -1,13 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Zap, ChevronDown, LogIn, LogOut, Mail, Briefcase } from 'lucide-react';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  // useRef é um hook do React que permite criar uma referência mutável a um elemento DOM. Ele é usado para acessar diretamente o DOM e manipular elementos de forma imperativa. No caso do dropdown, useRef é utilizado para criar uma referência ao elemento do dropdown, permitindo verificar se um clique ocorreu dentro ou fora dele.
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Fecha o dropdown se clicar fora dele
+      // event.target - o elemento que o usuário clicou
+      // dropdownRef.current.contains(event.target) - verifica se o elemento clicado está dentro do dropdown
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    // toda vez que o usuário clicar em qualquer lugar da página, a função handleClickOutside é chamada para verificar se o clique ocorreu fora do dropdown. Se sim, o estado isDropdownOpen é definido como false, fechando o menu dropdown.
+
+    document.addEventListener('mousedown', handleClickOutside);
+    // Limpa o event listener quando o componente é desmontado para evitar vazamentos de memória
+
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+
   const toggleLogin = () => {
     setIsLoggedIn(!isLoggedIn);
     setIsDropdownOpen(false);
+
   };
   return (
     <header className="bg-slate-800 text-white py-4 shadow-lg">
@@ -64,7 +86,7 @@ const Header = () => {
               </li>
 
               {/* Dropdown Menu */}
-              <li className="relative">
+              <li className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors"
@@ -79,7 +101,7 @@ const Header = () => {
 
                 {/* Dropdown Content */}
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-slate-700 rounded-lg shadow-xl py-2 z-50">
+                  <div className="absolute right-0 mt-6 w-screen max-w-xs lg:max-w-sm bg-slate-700 rounded-b-lg shadow-xl py-2 z-50">
                     <a
                       href="#"
                       className="block px-4 py-2 hover:bg-slate-600 transition-colors"
