@@ -13,7 +13,7 @@ const FormularioCalculo = () => {
 
 
     return (
-        <div className="bg-white rounded-xl p-6 shadow-md">
+        <div className="bg-white  p-6 shadow-md">
 
             {/* O cabeçalho do formulário de cálculo é composto por um ícone de calculadora e um título "Simulação de Economia". */}
 
