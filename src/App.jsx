@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from './components/organisms/Header';
 import FormularioCalculo from './components/organisms/FormularioCalculo';
+import Footer from './components/organisms/Footer';
 
 
 function App() {
@@ -9,8 +10,9 @@ function App() {
       <Header />
       <main className=" w-full mx-auto flex-1">
         <FormularioCalculo />
-
+    
       </main>
+      <Footer />
     </div>
   );
 }
