@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white py-10">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-
+              {/* Menu */}
          <div>
           <h2 className="text-xl font-bold mb-4">Menu</h2>
           <ul className="space-y-2">
@@ -14,7 +14,7 @@ const Footer = () => {
             <li><a href="#" className="hover:text-yellow-400">Contato</a></li>
           </ul>
         </div>
-
+            {/* Equipamentos */}
         <div>
           <h2 className="text-xl font-bold mb-4">Equipamentos de Energia</h2>
           <ul className="space-y-2">
@@ -25,6 +25,7 @@ const Footer = () => {
             <li>Nobreaks</li>
           </ul>
         </div>
+            {/* Localização */}
         <div>
           <h2 className="text-xl font-bold mb-4">Como Chegar</h2>
           <p className="mb-3">
@@ -60,6 +61,45 @@ const Footer = () => {
             <a href="#" className="hover:text-yellow-400">Instagram</a>
             <a href="#" className="hover:text-yellow-400">LinkedIn</a>
           </div>
+        </div>
+         {/* Formulário */}
+        <div className="md:col-span-2" > 
+          <h2 className="text-xl font-bold mb-4">
+            Solicite um Orçamento
+          </h2>
+
+          <form className="space-y-3">
+            <input
+              type="text"
+              placeholder="Nome"
+              className="w-full p-3 rounded bg-gray-800 border border-gray-700"
+            />
+
+            <input
+              type="email"
+              placeholder="Email"
+              className="w-full p-3 rounded bg-gray-800 border border-gray-700"
+            />
+
+            <input
+              type="text"
+              placeholder="Consumo médio (kWh)"
+              className="w-full p-3 rounded bg-gray-800 border border-gray-700"
+            />
+
+            <textarea
+              placeholder="Mensagem"
+              rows="3"
+              className="w-full p-3 rounded bg-gray-800 border border-gray-700"
+            ></textarea>
+
+            <button
+              type="submit"
+              className="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded font-semibold w-full"
+            >
+              Enviar
+            </button>
+          </form>
         </div>
     </div>
 
