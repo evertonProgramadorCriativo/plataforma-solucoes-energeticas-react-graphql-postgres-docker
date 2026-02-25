@@ -14,6 +14,18 @@ const Footer = () => {
             <li><a href="#" className="hover:text-yellow-400">Contato</a></li>
           </ul>
         </div>
+
+        <div>
+          <h2 className="text-xl font-bold mb-4">Equipamentos de Energia</h2>
+          <ul className="space-y-2">
+            <li>Geradores</li>
+            <li>Placas solares</li>
+            <li>Baterias</li>
+            <li>Inversores</li>
+            <li>Nobreaks</li>
+          </ul>
+        </div>
+
       </div>
 
       
