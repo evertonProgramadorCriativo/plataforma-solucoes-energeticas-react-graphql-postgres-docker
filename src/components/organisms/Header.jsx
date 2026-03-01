@@ -4,6 +4,7 @@ import Logo from '../molecules/Logo';
 import DropdownMenu from '../molecules/DropdownMenu';
 import MobileMenu from '../molecules/MobileMenu';
 import LoginButton from '../atoms/LoginButton';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   // Gerencia o estado de login do usuário
@@ -43,7 +44,9 @@ const Header = () => {
     <header className="bg-slate-800 text-white py-4 shadow-lg">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between">
-          <Logo />
+          <Link to="/">
+            <Logo />
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:block">
@@ -56,7 +59,10 @@ const Header = () => {
               <li>
                 <button className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors">
                   <Mail size={18} />
-                  <span>Contato</span>
+                  <span>
+                    {' '}
+                    <Link to="/contato">Contato</Link>
+                  </span>
                 </button>
               </li>
               <li>

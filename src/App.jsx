@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/organisms/Header';
 import HomePage from './pages/HomePage';
+import ContatoPage from './pages/Contatopage';
 import Footer from './components/organisms/Footer';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/home" element={<HomePage />} />
+            <Route path="/contato" element={<ContatoPage />} />
           </Routes>
         </main>
         <Footer />
