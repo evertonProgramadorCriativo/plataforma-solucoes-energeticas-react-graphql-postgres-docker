@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import BackButton from '../components/atoms/BackButton';
-import { Send, User } from 'lucide-react';
+import { Send, User, Mail } from 'lucide-react';
 import { sidebarInfoContato } from '../data/sidebarInfoContato';
 import { initialForm } from '../data/contatoForm';
 import { InputField, InputClass } from '../components/atoms/InputContato';
@@ -50,6 +50,27 @@ const ContatoPage = () => {
     // Se vazio, adiciona a mensagem de erro no objeto errs com a chave 'nome'
     // Resultado esperado: errs.nome = 'Nome é obrigatório' quando o campo não foi preenchido
     if (!form.nome.trim()) errs.nome = 'Nome é obrigatório';
+    // Verifica se o campo email está vazio ou contém só espaços
+    if (!form.email.trim()) errs.email = 'E-mail é obrigatório';
+    // Verifica se o email tem um formato válido usando expressão regular
+    // '/' Abre e fecha a expressão regular
+    // ^ Início da string
+    // [^\s@]+ Um ou mais caracteres que não sejam espaço ou '@'
+    // @ O símbolo '@' obrigatório
+    // [^\s@]+ Um ou mais caracteres que não sejam espaço ou '@' (domínio)
+    // \. O ponto '.' obrigatório (precisa ser escapado com '\')
+    // [^\s@]+ Um ou mais caracteres que não sejam espaço ou '@' (extensão)
+    // $ Fim da string
+    /*
+    Exemplos práticos:
+
+      joao@gmail.com      -> VALIDO   (passa em tudo)
+      joao@gmail          -> INVALIDO (falta o .com)
+      joaogmail.com       -> INVALIDO (falta o @)
+      jo ao@gmail.com     -> INVALIDO (tem espaço)
+      @gmail.com          -> INVALIDO (nada antes do @)
+      joao@.com           -> INVALIDO (nada entre @ e o ponto)
+    */ else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = 'E-mail inválido';
     // Retorna o objeto de erros (vazio se tudo estiver correto)
     // Resultado esperado: {} se válido, ou { nome: 'Nome é obrigatório' } se inválido
     return errs;
@@ -76,7 +97,7 @@ const ContatoPage = () => {
     // Se chegou aqui, não há erros — limpa qualquer erro anterior exibido na tela
     // Resultado esperado: todos os campos voltam ao estilo normal sem mensagens de erro
 
-    alert(`Formulário enviado com sucesso! Nome: ${form.nome}`);
+    alert(`Formulário enviado com sucesso!\n\nNome: ${form.nome}\nE-mail: ${form.email}`);
   };
 
   return (
@@ -122,12 +143,21 @@ const ContatoPage = () => {
           <div className="lg:col-span-2 bg-white rounded-3xl shadow-sm border border-slate-100 p-8">
             <div className="grid sm:grid-cols-2 gap-5">
               {/* Componente InputField reutilizável que encapsula label, ícone e mensagem de erro */}
-              <InputField label="Nome completo *" icon={User} error={errors.nome}>
+              <InputField label="Nome completo" icon={User} error={errors.nome}>
                 <input
                   className={InputClass('nome')}
                   placeholder="Seu nome"
                   value={form.nome}
                   onChange={handleChange('nome')}
+                />
+              </InputField>
+              <InputField label="E-mail" icon={Mail} error={errors.email}>
+                <input
+                  type="email"
+                  className={InputClass('email')}
+                  placeholder="seu@email.com"
+                  value={form.email}
+                  onChange={handleChange('email')}
                 />
               </InputField>
               <button onClick={handleSubmit}>Enviar</button>
