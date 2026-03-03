@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import BackButton from '../components/atoms/BackButton';
-import { Send, User, Mail, Phone } from 'lucide-react';
+import { Send, User, Mail, Phone, Building2 } from 'lucide-react';
 import { sidebarInfoContato } from '../data/sidebarInfoContato';
 import { initialForm } from '../data/contatoForm';
 import { InputField, InputClass } from '../components/atoms/InputContato';
@@ -73,6 +73,8 @@ const ContatoPage = () => {
     */ else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = 'E-mail inválido';
     // Verifica se o campo telefone está vazio ou contém só espaços
     if (!form.telefone.trim()) errs.telefone = 'Telefone é obrigatório';
+    // O campo empresa é opcional, mas se o usuário digitar algo, vamos validar que não seja só espaços
+    if (!form.empresa.trim()) errs.empresa = 'empresa é obrigatório';
     // Retorna o objeto de erros (vazio se tudo estiver correto)
     // Resultado esperado: {} se válido, ou { nome: 'Nome é obrigatório' } se inválido
     return errs;
@@ -100,7 +102,7 @@ const ContatoPage = () => {
     // Resultado esperado: todos os campos voltam ao estilo normal sem mensagens de erro
 
     alert(
-      `Formulário enviado com sucesso!\n\nNome: ${form.nome}\nE-mail: ${form.email}\nTelefone: ${form.telefone}`
+      `Formulário enviado com sucesso!\n\nNome: ${form.nome}\nEmpresa: ${form.empresa}\n E-mail: ${form.email}\n Telefone: ${form.telefone}`
     );
   };
 
@@ -170,6 +172,14 @@ const ContatoPage = () => {
                   placeholder="(11) 99999-9999"
                   value={form.telefone}
                   onChange={handleChange('telefone')}
+                />
+              </InputField>
+              <InputField label="Empresa" icon={Building2} error={errors.empresa}>
+                <input
+                  className={InputClass('empresa')}
+                  placeholder="Nome da empresa (opcional)"
+                  value={form.empresa}
+                  onChange={handleChange('empresa')}
                 />
               </InputField>
               <button onClick={handleSubmit}>Enviar</button>
