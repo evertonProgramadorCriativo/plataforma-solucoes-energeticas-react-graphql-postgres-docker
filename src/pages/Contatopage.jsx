@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
 import BackButton from '../components/atoms/BackButton';
-import { Send, User, Mail, Phone, Building2, MapPin, ChevronDown, Zap } from 'lucide-react';
+import {
+  Send,
+  User,
+  Mail,
+  Phone,
+  Building2,
+  MapPin,
+  ChevronDown,
+  Zap,
+  MessageSquare,
+} from 'lucide-react';
 import { sidebarInfoContato } from '../data/sidebarInfoContato';
 import { initialForm } from '../data/contatoForm';
 import { InputField, InputClass } from '../components/atoms/InputContato';
@@ -33,7 +43,7 @@ const ContatoPage = () => {
       const updated = { ...prev, [field]: value };
       // Exibe no console o estado completo após a alteração (útil para debug)
       // Resultado esperado: objeto impresso no console a cada tecla digitada
-      console.log(updated);
+      //console.log(updated);
       // Retorna o novo estado para o setForm aplicar
       return updated;
     });
@@ -98,6 +108,8 @@ const ContatoPage = () => {
     if (form.consumoMensal && (isNaN(form.consumoMensal) || form.consumoMensal <= 0)) {
       errs.consumoMensal = 'Consumo mensal deve ser um número positivo';
     }
+    // Verifica se o campo mensagem está vazio ou contém só espaços
+    if (!form.mensagem.trim()) errs.mensagem = 'Mensagem é obrigatória';
 
     // Retorna o objeto de erros (vazio se tudo estiver correto)
     // Resultado esperado: {} se válido, ou { nome: 'Nome é obrigatório' } se inválido
@@ -126,7 +138,7 @@ const ContatoPage = () => {
     // Resultado esperado: todos os campos voltam ao estilo normal sem mensagens de erro
 
     alert(
-      `Formulário enviado com sucesso!\n\nNome: ${form.nome}\nEmpresa: ${form.empresa}\n E-mail: ${form.email}\n Telefone: ${form.telefone} \n Estado: ${form.estado} \n Tipo de Serviço: ${form.tipoServico}`
+      `Formulário enviado com sucesso!\n\nNome: ${form.nome}\nEmpresa: ${form.empresa}\n E-mail: ${form.email}\n Telefone: ${form.telefone} \n Estado: ${form.estado} \n Tipo de Serviço: ${form.tipoServico} \n Consumo Mensal: ${form.consumoMensal} kWh \n Mensagem: ${form.mensagem}`
     );
   };
 
@@ -258,8 +270,24 @@ const ContatoPage = () => {
                   onChange={handleChange('consumoMensal')}
                 />
               </InputField>
-              <button onClick={handleSubmit}>Enviar</button>
             </div>
+            {/* Mensagem */}
+            <div className="mt-5">
+              <InputField
+                label="Mensagem / Detalhes da proposta"
+                icon={MessageSquare}
+                error={errors.mensagem}
+              >
+                <textarea
+                  rows={5}
+                  className={`${InputClass('mensagem')} resize-none`}
+                  placeholder="Descreva suas necessidades, dúvidas ou detalhes sobre o imóvel..."
+                  value={form.mensagem}
+                  onChange={handleChange('mensagem')}
+                />
+              </InputField>
+            </div>
+            <button onClick={handleSubmit}>Enviar</button>
           </div>
         </div>
       </div>

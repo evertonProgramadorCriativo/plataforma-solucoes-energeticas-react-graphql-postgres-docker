@@ -5,4 +5,5 @@ export const initialForm = {
   empresa: '',
   estado: '',
   consumoMensal: '',
+  mensagem: '',
 };
