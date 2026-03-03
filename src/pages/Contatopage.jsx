@@ -8,6 +8,7 @@ import {
   Building2,
   MapPin,
   ChevronDown,
+  CheckCircle2,
   Zap,
   MessageSquare,
 } from 'lucide-react';
@@ -15,11 +16,15 @@ import { sidebarInfoContato } from '../data/sidebarInfoContato';
 import { initialForm } from '../data/contatoForm';
 import { InputField, InputClass } from '../components/atoms/InputContato';
 import { estadosBR, tiposServicoArray } from '../data/estadosData';
+import { useNavigate } from 'react-router-dom';
 
 const ContatoPage = () => {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
+  const [enviando, setEnviando] = useState(false);
+  const [enviado, setEnviado] = useState(false);
 
+  const navigate = useNavigate();
   // handleChange: função de ordem superior (retorna outra função)
   // Recebe o nome do campo (ex: 'nome', 'email') como argumento
   const handleChange = (field) => (e) => {
@@ -88,7 +93,8 @@ const ContatoPage = () => {
       errs.telefone = 'Telefone é obrigatório';
     } else {
       const apenasNumeros = form.telefone.replace(/\D/g, '');
-
+      // Verifica se o telefone contém apenas números e caracteres válidos (parênteses, espaços, hífens, etc.)
+      //xxx-xxx-xxxx -> 10 dígitos
       if (!/^[\d\s\-()+]+$/.test(form.telefone)) {
         errs.telefone = 'Use apenas números e caracteres válidos';
       } else if (apenasNumeros.length !== 10 && apenasNumeros.length !== 11) {
@@ -133,6 +139,17 @@ const ContatoPage = () => {
       // Interrompe a execução para não prosseguir com o envio do formulário
       return;
     }
+    // Se chegou aqui, não há erros — limpa qualquer erro anterior exibido na tela
+    setErrors({});
+    // Simula o envio do formulário (pode ser uma chamada API real no futuro)
+    setEnviando(true);
+    // Após 1.8 segundos, considera que o envio foi concluído com sucesso
+    setTimeout(() => {
+      // Atualiza os estados para refletir que o envio terminou e a proposta foi enviada
+      setEnviando(false);
+      // Exibe a mensagem de sucesso e os dados enviados (pode ser substituído por uma resposta real da API)
+      setEnviado(true);
+    }, 1800);
     setErrors({});
     // Se chegou aqui, não há erros — limpa qualquer erro anterior exibido na tela
     // Resultado esperado: todos os campos voltam ao estilo normal sem mensagens de erro
@@ -141,6 +158,51 @@ const ContatoPage = () => {
       `Formulário enviado com sucesso!\n\nNome: ${form.nome}\nEmpresa: ${form.empresa}\n E-mail: ${form.email}\n Telefone: ${form.telefone} \n Estado: ${form.estado} \n Tipo de Serviço: ${form.tipoServico} \n Consumo Mensal: ${form.consumoMensal} kWh \n Mensagem: ${form.mensagem}`
     );
   };
+  // handleReset: função para limpar o formulário e permitir enviar uma nova proposta
+  const handleReset = () => {
+    // Reseta o estado do formulário para os valores iniciais definidos em initialForm
+    //initialForm : { nome: '', email: '', telefone: '', empresa: '', estado: '', consumoMensal: '', mensagem: '' }
+    setForm(initialForm);
+    // setErrors({}) limpa o estado de erros para que as mensagens de erro desapareçam da tela
+    setErrors({});
+    // setEnviado(false) volta o estado de "enviado" para false, permitindo que o usuário veja o formulário novamente
+    setEnviado(false);
+  };
+  if (true) {
+    return (
+      <div className="bg-white min-h-[70vh] flex items-center justify-center px-4">
+        <div className="shadow-2xl p-10 max-w-md w-full text-center animate-fade-in">
+          <div className="flex justify-center  mb-6">
+            <div className="bg-green-100  w-fullrounded-full p-5">
+              <CheckCircle2 size={52} className="text-green-500" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold text-slate-800 mb-3">Proposta Enviada!</h2>
+          <p className="text-slate-500 mb-2 text-sm leading-relaxed">
+            Recebemos sua solicitação com sucesso. Nossa equipe analisará sua proposta e entrará em
+            contato em até <strong>24 horas úteis</strong>.
+          </p>
+          <p className="text-slate-400 text-xs mb-8">
+            Um e-mail de confirmação foi enviado para <strong>{form.email}</strong>
+          </p>
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={handleReset}
+              className="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold transition-colors"
+            >
+              Enviar Nova Proposta
+            </button>
+            <button
+              onClick={() => navigate('/')}
+              className="w-full py-3 rounded-xl border-2 border-slate-200 hover:border-slate-300 text-slate-600 font-semibold transition-colors"
+            >
+              Voltar ao Início
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white min-h-[500px]">
@@ -292,9 +354,20 @@ const ContatoPage = () => {
               bg-amber-500 hover:bg-amber-600 disabled:opacity-60 disabled:cursor-not-allowed
               text-white font-bold text-base transition-all shadow-lg shadow-amber-200
               hover:shadow-amber-300 hover:-translate-y-0.5 active:translate-y-0 "
+              disabled={enviando}
               onClick={handleSubmit}
             >
-              Enviar
+              {enviando ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Enviando proposta...
+                </>
+              ) : (
+                <>
+                  <Send size={18} />
+                  Enviar Proposta de Contratação
+                </>
+              )}
             </button>
           </div>
         </div>
