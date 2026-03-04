@@ -185,6 +185,11 @@ const ServicosPage = () => {
                     )}
                   </span>
                 </button>
+                {openFaq === i && (
+                  <div className="px-5 pb-5 text-sm text-slate-500 leading-relaxed border-t border-slate-100 pt-4">
+                    {faq.a}
+                  </div>
+                )}
               </div>
             ))}
           </div>
