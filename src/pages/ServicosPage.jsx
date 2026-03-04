@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import BackButton from '../components/atoms/BackButton';
-import { Zap } from 'lucide-react';
+import { Zap, ChevronUp, ChevronDown } from 'lucide-react';
 import { serviceDetails, faqs, statServiceArray } from '../data/ServicosPageData';
 import { Star, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -175,7 +175,14 @@ const ServicosPage = () => {
                 >
                   <span className="font-bold text-slate-800 text-sm pr-4">{faq.q}</span>
                   <span className="text-xs text-red-500">
-                    {openFaq === i ? 'ABERTO' : 'FECHADO'}
+                    {/*Operador ternário (condição ?  verdadeiro : falso )*/}
+
+                    {/*Se a condição for verdadeira, exibe o ícone de ChevronUp, caso contrário, exibe o ícone de ChevronDown */}
+                    {openFaq === i ? (
+                      <ChevronUp size={18} className="text-amber-500 shrink-0" />
+                    ) : (
+                      <ChevronDown size={18} className="text-slate-400 shrink-0" />
+                    )}
                   </span>
                 </button>
               </div>
