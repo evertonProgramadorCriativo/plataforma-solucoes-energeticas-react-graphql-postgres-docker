@@ -185,6 +185,7 @@ const ServicosPage = () => {
                     )}
                   </span>
                 </button>
+                {/* Resposta da FAQ */}
                 {openFaq === i && (
                   <div className="px-5 pb-5 text-sm text-slate-500 leading-relaxed border-t border-slate-100 pt-4">
                     {faq.a}
@@ -195,6 +196,22 @@ const ServicosPage = () => {
           </div>
         </section>
       </div>
+      {/* Entre em contato conosco */}
+      <section className="mt-7 bg-slate-800  p-8 text-center w-full">
+        <Zap size={28} className="text-amber-400 mx-auto mb-3" />
+        <h3 className="text-xl font-extrabold text-white mb-2">Pronto para economizar?</h3>
+        <p className="text-slate-400 text-sm mb-6">
+          Solicite uma proposta personalizada e comece sua jornada em energia solar hoje.
+        </p>
+        <button
+          onClick={() => navigate('/contato')}
+          className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600
+              text-white font-bold px-8 py-3.5 rounded-xl transition-all
+              shadow-lg shadow-amber-900/30 hover:-translate-y-0.5"
+        >
+          Solicitar Proposta Gratuita <ArrowRight size={16} />
+        </button>
+      </section>
     </div>
   );
 };
