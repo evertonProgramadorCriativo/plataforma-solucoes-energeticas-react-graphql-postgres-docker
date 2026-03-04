@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import BackButton from '../components/atoms/BackButton';
 import { Zap } from 'lucide-react';
-import { statServiceArray } from '../data/ServicosPageData';
-import { serviceDetails } from '../data/ServicosPageData';
-import { Star, ArrowRight } from 'lucide-react';
+import { serviceDetails, faqs, statServiceArray } from '../data/ServicosPageData';
+import { Star, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 const ServicosPage = () => {
-  const navigate = useNavigate(); // Hook para navegação programática
+  const navigate = useNavigate();
+  const [openFaq, setOpenFaq] = useState(null);
+  console.log('open faq resultado:', openFaq);
+  // open faq resultado: null -> nenhum faq aberto
+  //open faq resultado: 0 -> faq de índice 0 aberto
+  //open faq resultado: 1 -> faq de índice 1 aberto
+  //open faq resultado: 2 -> faq de índice 2 aberto
+
   return (
     <div className="w-full bg-slate-100">
       <div className="max-w-6xl   mx-auto px-4 py-10">
@@ -105,6 +111,29 @@ const ServicosPage = () => {
               </div>
             );
           })}
+        </section>
+        {/* FAQ */}
+        <section className="max-w-2xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-extrabold text-slate-800 mb-2">Perguntas Frequentes</h2>
+            <p className="text-slate-500 text-sm">Dúvidas comuns sobre energia solar</p>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            {faqs.map((faq, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq)}
+                  className="w-full flex items-center justify-between p-5 text-left"
+                >
+                  <span className="font-bold text-slate-800 text-sm pr-4">{faq.q}</span>
+                </button>
+              </div>
+            ))}
+          </div>
         </section>
       </div>
     </div>

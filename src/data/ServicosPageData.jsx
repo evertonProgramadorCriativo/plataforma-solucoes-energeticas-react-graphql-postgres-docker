@@ -105,3 +105,22 @@ export const serviceDetails = [
     destaque: false,
   },
 ];
+
+export const faqs = [
+  {
+    q: 'Quanto tempo leva a instalação?',
+    a: 'Sistemas residenciais levam de 1 a 3 dias. Projetos comerciais e industriais variam de 1 a 4 semanas dependendo do porte.',
+  },
+  {
+    q: 'Preciso de aprovação da distribuidora de energia?',
+    a: 'Sim, mas cuidamos de todo o processo burocrático junto à concessionária. O prazo médio de aprovação é de 30 a 90 dias.',
+  },
+  {
+    q: 'O sistema funciona em dias nublados?',
+    a: 'Sim! Os painéis geram energia mesmo com luz difusa. A geração reduz em torno de 20–30% em dias nublados.',
+  },
+  {
+    q: 'Qual a vida útil dos painéis solares?',
+    a: 'Os painéis têm garantia de desempenho de 25 anos com degradação inferior a 0,5% ao ano. Na prática, funcionam por mais de 30 anos.',
+  },
+];
