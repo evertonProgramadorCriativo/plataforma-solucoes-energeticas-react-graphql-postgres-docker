@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { HelpCircle, Search, ChevronDown, ChevronUp } from 'lucide-react';
+import { HelpCircle, Search, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import BackButton from '../components/atoms/BackButton';
 import { categorias } from '../data/FaqPageData';
 import { faqs } from '../data/FaqPageData';
+import { useNavigate } from 'react-router-dom';
 const FaqPage = () => {
+  const navigate = useNavigate();
   const [busca, setBusca] = useState('');
   const [openIndex, setOpenIndex] = useState(null);
   const [categoriaAtiva, setCategoriaAtiva] = useState('Todas');
@@ -144,6 +146,20 @@ O que aprendi com isso: a combinação de useState + .filter() é uma das formas
             </div>
           )}
         </div>
+      </section>
+      <section className="bg-amber-500  p-10 text-white text-center shadow-xl shadow-amber-200">
+        <HelpCircle size={32} className="mx-auto mb-4" />
+        <h2 className="text-xl font-extrabold mb-2">Ainda tem dúvidas?</h2>
+        <p className="text-white/80 text-sm mb-6 max-w-md mx-auto">
+          Nossa equipe de especialistas está pronta para responder qualquer pergunta e montar uma
+          proposta personalizada.
+        </p>
+        <button
+          onClick={() => navigate('/contato')}
+          className="bg-white text-amber-500 font-bold px-8 py-3 rounded-xl hover:bg-amber-50 transition-all inline-flex items-center gap-2"
+        >
+          Falar com Especialista <ArrowRight size={15} />
+        </button>
       </section>
     </div>
   );

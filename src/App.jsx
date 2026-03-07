@@ -5,7 +5,7 @@ import HomePage from './pages/HomePage';
 import ContatoPage from './pages/Contatopage';
 import Footer from './components/organisms/Footer';
 import ServicosPage from './pages/ServicosPage';
-import FaqPage from './pages/FaqPage.jsx';
+import FaqPage from './pages/FaqPage';
 
 function App() {
   return (
