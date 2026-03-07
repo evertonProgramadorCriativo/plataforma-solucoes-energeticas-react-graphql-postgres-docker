@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { HelpCircle, Search } from 'lucide-react';
+import BackButton from '../components/atoms/BackButton';
+import { categorias } from '../data/FaqPageData';
 const FaqPage = () => {
   const [busca, setBusca] = useState('');
+  const [openIndex, setOpenIndex] = useState(null);
+  const [categoriaAtiva, setCategoriaAtiva] = useState('Todas');
+
   return (
     <div className="bg-slate-50 min-h-[100vh]">
       {/*  Header */}
@@ -32,6 +37,33 @@ const FaqPage = () => {
           </div>
         </div>
       </header>
+      <section className="max-w-4xl mx-auto  px-4 py-10">
+        <BackButton />
+        {/*  CATEGORIAS  */}
+        <div className="flex flex-wrap gap-2 mb-10 justify-center">
+          {categorias.map(({ label, icon: Icon }) => (
+            // Icon = const icon = HelpCircle, DollarSign, Wrench, Building2, Leaf, ShieldCheck
+            //const Icon = icon; <Icon size={14} />
+            <button
+              key={label}
+              onClick={() => {
+                // Ao clicar em uma categoria, a função onClick é chamada, que define a categoria ativa usando setCategoriaAtiva(label) e fecha o dropdown definindo setOpenIndex(null). Por exemplo, se o usuário clicar na categoria "Financeiro", a função onClick será executada, definindo a categoria ativa como "Financeiro" e fechando o dropdown.
+                //label: 'Financeiro', icon: DollarSign -> setCategoriaAtiva('Financeiro') e Icon = DollarSign
+                setCategoriaAtiva(label);
+                setOpenIndex(null);
+              }}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold border-2 transition-all ${
+                categoriaAtiva === label
+                  ? 'bg-amber-500 text-white border-amber-500 shadow-md shadow-amber-200'
+                  : 'bg-white text-slate-600 border-slate-200 hover:border-amber-300'
+              }`}
+            >
+              <Icon size={14} />
+              {label}
+            </button>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };
