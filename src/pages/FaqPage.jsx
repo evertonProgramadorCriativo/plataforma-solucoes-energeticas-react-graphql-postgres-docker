@@ -1,6 +1,7 @@
-import React from 'react';
-import { HelpCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { HelpCircle, Search } from 'lucide-react';
 const FaqPage = () => {
+  const [busca, setBusca] = useState('');
   return (
     <div className="bg-slate-50 min-h-[100vh]">
       {/*  Header */}
@@ -18,6 +19,17 @@ const FaqPage = () => {
           <p className="text-slate-300 mb-8 max-w-lg mx-auto leading-relaxed">
             Encontre respostas rápidas sobre energia solar, instalação, financiamento e muito mais.
           </p>
+          {/* Barra de busca */}
+          <div className="relative max-w-md mx-auto">
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Pesquise sua dúvida..."
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+              className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white text-slate-800 text-sm outline-none border-2 border-transparent focus:border-amber-400 shadow-lg"
+            />
+          </div>
         </div>
       </header>
     </div>
