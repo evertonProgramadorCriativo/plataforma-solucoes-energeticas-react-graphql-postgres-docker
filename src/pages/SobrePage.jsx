@@ -1,6 +1,7 @@
 import React from 'react';
-import { Zap, ArrowRight } from 'lucide-react';
+import { Zap, ArrowRight, Target } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import BackButton from '../components/atoms/BackButton';
 const SobrePage = () => {
   const navigate = useNavigate();
   return (
@@ -39,6 +40,23 @@ const SobrePage = () => {
           </div>
         </div>
       </header>
+      <main className="max-w-6xl mx-auto px-4 py-10">
+        <BackButton />
+
+        {/*  Cards Informativos Sobre a Empresa  */}
+        <section className="mb-16">
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
+              <Target size={28} className="text-amber-500 mb-4" />
+              <h3 className="text-lg font-extrabold text-slate-800 mb-2">Missão</h3>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                Democratizar o acesso à energia solar limpa e acessível para residências, comércios
+                e indústrias em todo o Brasil.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   );
 };
