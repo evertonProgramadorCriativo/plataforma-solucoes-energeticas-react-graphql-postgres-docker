@@ -6,6 +6,7 @@ import ContatoPage from './pages/Contatopage';
 import Footer from './components/organisms/Footer';
 import ServicosPage from './pages/ServicosPage';
 import FaqPage from './pages/FaqPage';
+import SobrePage from './pages/SobrePage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/contato" element={<ContatoPage />} />
             <Route path="/servicos" element={<ServicosPage />} />
             <Route path="/faq" element={<FaqPage />} />
+            <Route path="/sobre" element={<SobrePage />} />
           </Routes>
         </main>
         <Footer />
