@@ -2,6 +2,7 @@ import React from 'react';
 import { Zap, ArrowRight, Target, Globe, Award } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import BackButton from '../components/atoms/BackButton';
+import { valores } from '../data/SobrePageData';
 const SobrePage = () => {
   const navigate = useNavigate();
   return (
@@ -65,8 +66,8 @@ const SobrePage = () => {
                 a transição para uma economia de carbono zero.
               </p>
             </div>
+            {/* Card 3: Propósito */}
             <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
-              {/* Card 3: Propósito */}
               <Award size={28} className="text-amber-500 mb-4" />
               <h3 className="text-lg font-extrabold text-slate-800 mb-2">Propósito</h3>
               <p className="text-slate-500 text-sm leading-relaxed">
@@ -74,6 +75,28 @@ const SobrePage = () => {
                 luxo — é direito de todos.
               </p>
             </div>
+          </div>
+        </section>
+        {/*  section nossos valores */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-extrabold text-slate-800 mb-8 text-center">
+            Nossos Valores
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            {valores.map(({ icon: Icon, titulo, desc }) => (
+              //icon : Icon é uma destruturação que renomeia a propriedade "icon" para "Icon" para ser usada como um componente React. Assim, podemos renderizar o ícone dinamicamente usando <Icon /> no JSX.
+              //icon:Icon é igual const Icon = icon.item para ser usado em componentes React. Assim, podemos renderizar o ícone dinamicamente usando <Icon /> no JSX.
+              <div
+                key={titulo}
+                className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:-translate-y-1 transition-all text-center"
+              >
+                <div className="bg-amber-50 rounded-xl p-3 inline-flex mb-4">
+                  <Icon size={22} className="text-amber-500" />
+                </div>
+                <h4 className="font-extrabold text-slate-800 text-sm mb-2">{titulo}</h4>
+                <p className="text-slate-500 text-xs leading-relaxed">{desc}</p>
+              </div>
+            ))}
           </div>
         </section>
       </main>
