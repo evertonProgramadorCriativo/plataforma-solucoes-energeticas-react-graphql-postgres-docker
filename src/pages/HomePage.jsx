@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import FormularioCalculo from '../components/organisms/FormularioCalculo';
+import { bannersData } from '../data/BannerCarouselData';
 
 // BannerCarousel -> estrutura base: estado e efeito declarados, sem JSX ainda
 function BannerCarousel() {
   const [current, setCurrent] = useState(0); // índice do banner ativo
   const [paused, setPaused] = useState(false); // pausa o autoplay no hover
+  const total = bannersData.length; // 5
 
   useEffect(() => {
-    console.log('BannerCarousel montado — current:', current);
+    // Confirma que o array está carregado e o total está correto
+    console.log('Total de banners:', total);
+    console.log('Banner atual:', bannersData[current]);
   }, [current]);
 
   // JSX temporário só para confirmar que o componente existe
@@ -21,7 +25,10 @@ function BannerCarousel() {
         justifyContent: 'center',
       }}
     >
-      <p>BannerCarousel — índice atual: {current}</p>
+      <p>
+        BannerCarousel — total: {total} | índice: {current} | Título dos banners :{' '}
+        {bannersData[current].badge}
+      </p>
     </div>
   );
 }
