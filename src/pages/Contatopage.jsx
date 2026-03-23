@@ -168,6 +168,8 @@ const ContatoPage = () => {
     // setEnviado(false) volta o estado de "enviado" para false, permitindo que o usuário veja o formulário novamente
     setEnviado(false);
   };
+
+  // Mensagem Enviado true
   if (enviado) {
     return (
       <div className="bg-white min-h-[70vh] flex items-center justify-center px-4">
@@ -203,6 +205,7 @@ const ContatoPage = () => {
       </div>
     );
   }
+  // Mensagem Enviada False
 
   return (
     <div className="bg-white min-h-[500px]">

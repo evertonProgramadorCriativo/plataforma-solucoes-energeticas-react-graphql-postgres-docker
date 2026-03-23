@@ -85,6 +85,9 @@ const SobrePage = () => {
             Nossos Valores
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            {/*Desestruturação const icon = Icon para Componente <Icon>
+             { icon: Icon } é o mesmo que: const Icon = item.icon
+            */}
             {valores.map(({ icon: Icon, titulo, desc }) => (
               //icon : Icon é uma destruturação que renomeia a propriedade "icon" para "Icon" para ser usada como um componente React. Assim, podemos renderizar o ícone dinamicamente usando <Icon /> no JSX.
               //icon:Icon é igual const Icon = icon.item para ser usado em componentes React. Assim, podemos renderizar o ícone dinamicamente usando <Icon /> no JSX.
@@ -117,6 +120,8 @@ const SobrePage = () => {
               <div className="grid grid-cols-2 gap-4 flex-1">
                 {/*Desestruturação const icon = Icon para Componente <Icon> */}
                 {techStack.map(({ icon: Icon, label, desc, img }) => (
+                  //icon : Icon é uma destruturação que renomeia a propriedade "icon" para "Icon" para ser usada como um componente React. Assim, podemos renderizar o ícone dinamicamente usando <Icon /> no JSX.
+                  //icon:Icon é igual const Icon = icon.item para ser usado em componentes React. Assim, podemos renderizar o ícone dinamicamente usando <Icon /> no JSX.
                   <div
                     key={label}
                     className="relative bg-slate-700 rounded-2xl overflow-hidden flex flex-col min-h-40 group"
@@ -254,7 +259,7 @@ const SobrePage = () => {
             </div>
           </div>
         </section>
-        {/* Funcionario da empresa */}
+        {/* Section Funcionario da empresa */}
         <section className="mb-16">
           <div className="text-center mb-8">
             <Users size={28} className="text-amber-500 mx-auto mb-3" />
@@ -262,6 +267,7 @@ const SobrePage = () => {
             <p className="text-slate-500 text-sm">Um time apaixonado por energia e pessoas</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {/* Listando pessoas da equipe */}
             {equipe.map(({ nome, cargo, img }) => (
               <div
                 key={nome}

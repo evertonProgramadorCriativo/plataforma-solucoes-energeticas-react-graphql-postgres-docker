@@ -2,6 +2,7 @@
 // - Label com ícone opcional (ícone âmbar quando fornecido)
 // - Exibe mensagem de erro quando a prop 'error' é fornecida
 // - O input deve ser passado como children para maior flexibilidade
+// { icon: Icon } é o mesmo que: const Icon = item.icon
 export const InputField = ({ label, icon: Icon, error, children }) => (
   <div className="flex flex-col gap-1">
     <label className="text-sm font-semibold text-slate-600 flex items-center gap-1.5">

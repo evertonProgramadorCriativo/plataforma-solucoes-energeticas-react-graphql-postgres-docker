@@ -55,6 +55,10 @@ const SuportePage = () => {
             Escolha o canal mais conveniente para você
           </p>
           <div className="grid md:grid-cols-3 gap-5">
+            {/*Desestruturação const icon = Icon para Componente <Icon>
+            { icon: Icon } é o mesmo que: const Icon = item.icon
+            */}
+
             {canais.map(({ icon: Icon, titulo, desc, info, badge, cor, destaque }) => (
               //icon : Icon é uma destruturação que renomeia a propriedade "icon" para "Icon" para ser usada como um componente React. Assim, podemos renderizar o ícone dinamicamente usando <Icon /> no JSX.
               //icon:Icon é igual const Icon = icon.item para ser usado em componentes React. Assim, podemos renderizar o ícone dinamicamente usando <Icon /> no JSX.
@@ -103,7 +107,12 @@ const SuportePage = () => {
             Selecione para agilizarmos o atendimento
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {/*Desestruturação const icon = Icon para Componente <Icon>
+             { icon: Icon } é o mesmo que: const Icon = item.icon
+            */}
             {problemas.map(({ icon: Icon, titulo, desc }) => (
+              //icon : Icon é uma destruturação que renomeia a propriedade "icon" para "Icon" para ser usada como um componente React. Assim, podemos renderizar o ícone dinamicamente usando <Icon /> no JSX.
+              //icon:Icon é igual const Icon = icon.item para ser usado em componentes React. Assim, podemos renderizar o ícone dinamicamente usando <Icon /> no JSX.
               <button
                 key={titulo}
                 onClick={() => setProblema(problemaSelecionado === titulo ? null : titulo)}
