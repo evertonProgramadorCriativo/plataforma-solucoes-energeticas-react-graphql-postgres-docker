@@ -37,22 +37,40 @@ function BannerCarousel() {
     return () => clearInterval(t); // limpa o interval ao desmontar ou re-executar
   }, [paused, current]);
 
+  const b = bannersData[current]; // banner ativo
   // JSX temporário só para confirmar que o componente existe
   return (
     <div
-      style={{
-        background: '#94a3b8',
-        height: 280,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-      onMouseEnter={() => setPaused(true)} // pausa no hover
-      onMouseLeave={() => setPaused(false)} // retoma ao sair
+      className="relative w-full overflow-hidden"
+      style={{ height: 280 }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
     >
-      <p style={{ color: 'white', fontSize: 18 }}>
-        Banner {current + 1} de {total} — {paused ? ' pausado' : 'rodando'}
-      </p>
+      {/*
+        Fundo com gradiente dinâmico:
+        - key={current} força o React a recriar a div a cada troca de banner
+        - b.bg vem do array: ex 'from-amber-400 to-amber-500'
+        - transition-all duration-500 anima a troca de cor suavemente
+      */}
+      <div
+        key={current}
+        className={`absolute inset-0 bg-gradient-to-r ${b.bg} transition-all duration-500`}
+      />
+      <div
+        style={{
+          background: '#94a3b8',
+          height: 280,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        onMouseEnter={() => setPaused(true)} // pausa no hover
+        onMouseLeave={() => setPaused(false)} // retoma ao sair
+      >
+        <p style={{ color: 'white', fontSize: 18 }}>
+          Banner {current + 1} de {total} — {paused ? ' pausado' : 'rodando'}
+        </p>
+      </div>
     </div>
   );
 }
