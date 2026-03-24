@@ -175,6 +175,31 @@ function BannerCarousel() {
       >
         <ChevronRight size={16} />
       </button>
+
+      {/*
+        Dots de navegação centralizados na base:
+        - map gera um botão por banner (5 total)
+        - banner ativo: dot largo (w-5 h-2) branco
+        - banner inativo: dot redondo (w-2 h-2) branco translúcido
+        - onClick: navega diretamente para o índice clicado
+        - transition-all duration-300: anima a mudança de forma do dot
+      */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20">
+        {bannersData.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => {
+              console.log(`Dot clicado: indo para banner ${i}`);
+              setCurrent(i);
+            }}
+            className={`rounded-full transition-all duration-300 ${
+              i === current
+                ? 'w-5 h-2 bg-white' // ativo: pílula branca larga
+                : 'w-2 h-2 bg-white/40 hover:bg-white/70' // inativo: bolinha translúcida
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 }
