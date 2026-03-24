@@ -15,10 +15,10 @@ function BannerCarousel() {
   // Dependências: [paused, current] — reinicia o timer sempre que um desses muda
   useEffect(() => {
     if (paused) {
-      console.log('Autoplay pausado');
+      //console.log('Autoplay pausado');
       return; // sai sem criar o interval
     }
-    console.log('Autoplay rodando — banner atual:', current);
+    //console.log('Autoplay rodando — banner atual:', current);
 
     const t = setInterval(() => {
       setCurrent((p) => {
@@ -30,7 +30,7 @@ function BannerCarousel() {
         //  Resposta: 1 vez -> resto será 0 e voltara ao inicio
         // do carousel
         const next = (p + 1) % total; // volta ao 0 depois do último
-        console.log(`Avançando: ${p} -> ${next}`);
+        //console.log(`Avançando: ${p} -> ${next}`);
         return next;
       });
     }, 3500);
@@ -52,7 +52,7 @@ function BannerCarousel() {
   const tagStyle = bannerArray.textDark ? 'bg-black/10 text-slate-800' : 'bg-white/15 text-white';
 
   // No console: confirmar quais estilos estão sendo aplicados
-  console.log('Tema do banner:', { textDark: bannerArray.textDark, textColor, badgeStyle });
+  //console.log('Tema do banner:', { textDark: bannerArray.textDark, textColor, badgeStyle });
 
   return (
     <div
@@ -150,7 +150,7 @@ function BannerCarousel() {
       <button
         onClick={() => {
           const prev = (current - 1 + total) % total;
-          console.log(`Seta esquerda: ${current} -> ${prev}`);
+          //console.log(`Seta esquerda: ${current} -> ${prev}`);
           setCurrent(prev);
         }}
         className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/40 transition-all z-20"
@@ -168,7 +168,7 @@ function BannerCarousel() {
       <button
         onClick={() => {
           const next = (current + 1) % total;
-          console.log(`Seta direita: ${current} -> ${next}`);
+          // console.log(`Seta direita: ${current} -> ${next}`);
           setCurrent(next);
         }}
         className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/40 transition-all z-20"
@@ -189,7 +189,7 @@ function BannerCarousel() {
           <button
             key={i}
             onClick={() => {
-              console.log(`Dot clicado: indo para banner ${i}`);
+              // console.log(`Dot clicado: indo para banner ${i}`);
               setCurrent(i);
             }}
             className={`rounded-full transition-all duration-300 ${
