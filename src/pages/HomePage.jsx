@@ -37,8 +37,22 @@ function BannerCarousel() {
     return () => clearInterval(t); // limpa o interval ao desmontar ou re-executar
   }, [paused, current]);
 
-  const b = bannersData[current]; // banner ativo
+  const bannerArray = bannersData[current]; // banner ativo
   // JSX temporário só para confirmar que o componente existe
+
+  // Tema de cores baseado em textDark do banner ativo
+  // textDark: true  -> banner claro (amber)  -> texto escuro
+  // textDark: false -> banner escuro         -> texto branco
+  const textColor = bannerArray.textDark ? 'text-slate-900' : 'text-white';
+  const subColor = bannerArray.textDark ? 'text-slate-700' : 'text-white/80';
+  const badgeStyle = bannerArray.textDark
+    ? 'bg-white/60 text-slate-800 border border-slate-300'
+    : 'bg-white/20 text-white border border-white/30';
+  const tagStyle = bannerArray.textDark ? 'bg-black/10 text-slate-800' : 'bg-white/15 text-white';
+
+  // No console: confirmar quais estilos estão sendo aplicados
+  console.log('Tema do banner:', { textDark: bannerArray.textDark, textColor, badgeStyle });
+
   return (
     <div
       className="relative w-full overflow-hidden"
@@ -49,12 +63,12 @@ function BannerCarousel() {
       {/*
         Fundo com gradiente dinâmico:
         - key={current} força o React a recriar a div a cada troca de banner
-        - b.bg vem do array: ex 'from-amber-400 to-amber-500'
+        - bannerArray.bg vem do array: ex 'from-amber-400 to-amber-500'
         - transition-all duration-500 anima a troca de cor suavemente
       */}
       <div
         key={current}
-        className={`absolute inset-0 bg-gradient-to-r ${b.bg} transition-all duration-500`}
+        className={`absolute inset-0 bg-gradient-to-r ${bannerArray.bg} transition-all duration-500`}
       />
 
       {/*
@@ -63,13 +77,13 @@ function BannerCarousel() {
         - opacity-40 mobile / opacity-60 desktop — discreta para não disputar com o texto
         - maskImage: gradiente da direita para esquerda, criando fade suave
         - WebkitMaskImage: prefixo necessário para Safari
-        - key={b.img} força reload da imagem ao trocar de banner
+        - key={bannerArray.img} força reload da imagem ao trocar de banner
       */}
       <div className="absolute right-0 top-0 h-full w-1/2 md:w-2/5">
         <img
-          key={b.img}
-          src={b.img}
-          alt={b.imgAlt}
+          key={bannerArray.img}
+          src={bannerArray.img}
+          alt={bannerArray.imgAlt}
           className="w-full h-full object-cover opacity-40 md:opacity-60"
           style={{
             maskImage: 'linear-gradient(to left, rgba(0,0,0,0.9) 40%, transparent 100%)',
@@ -78,10 +92,51 @@ function BannerCarousel() {
         />
       </div>
 
-      {/* conteúdo temporário */}
-      <div className="relative z-10 h-full flex items-center px-8">
-        {/*/badge =  rótulo, etiqueta ou selo */}
-        <p className="text-white font-bold">{b.badge}</p>
+      {/* Coluna de conteúdo — alinhada à esquerda, máx 512px */}
+      <div className="relative z-10 h-full flex flex-col justify-center px-8 md:px-12 max-w-lg">
+        {/*
+          Badge: pílula com ponto colorido e texto do badge
+          backdrop-blur-sm: leve desfoque atrás para legibilidade
+        */}
+        <span
+          className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full w-fit mb-3 backdrop-blur-sm ${badgeStyle}`}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70 inline-block" />
+          {bannerArray.badge}
+        </span>
+
+        {/*
+          Título: fonte preta (font-black), letras maiúsculas
+          whitespace-pre-line: respeita o '\n' no título para quebra de linha
+          letterSpacing negativo: comprime as letras para visual impactante
+        */}
+        <h2
+          className={`text-3xl md:text-4xl font-black leading-none mb-2 whitespace-pre-line ${textColor}`}
+          style={{ fontFamily: 'system-ui, sans-serif', letterSpacing: '-0.02em' }}
+        >
+          {bannerArray.title}
+        </h2>
+
+        {/* Subtítulo */}
+        <p className={`text-sm mb-4 ${subColor}`}>{bannerArray.sub}</p>
+
+        {/* Tag promocional: pílula pequena com emoji */}
+        <p className={`text-xs mb-5 rounded-full px-3 py-1 w-fit ${tagStyle}`}>{bannerArray.tag}</p>
+
+        {/*
+          Botão CTA: cor invertida em relação ao fundo
+          textDark=true (banner claro) → botão escuro
+          textDark=false (banner escuro) → botão branco
+        */}
+        <button
+          className={`flex items-center gap-2 font-bold text-sm px-5 py-2.5 rounded-full w-fit transition-all hover:scale-105 ${
+            bannerArray.textDark
+              ? 'bg-slate-900 text-white hover:bg-slate-800'
+              : 'bg-white text-slate-900 hover:bg-white/90'
+          }`}
+        >
+          {bannerArray.cta}
+        </button>
       </div>
     </div>
   );
