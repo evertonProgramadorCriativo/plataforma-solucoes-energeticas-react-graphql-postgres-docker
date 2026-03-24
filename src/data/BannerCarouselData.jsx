@@ -4,7 +4,7 @@
 export const bannersData = [
   {
     bg: 'from-amber-400 to-amber-500',
-    badge: 'Loja Oficial',
+    badge: 'Loja Oficial', // badge = rótulo, etiqueta ou selo
     title: 'ENERGIA SOLAR\nPARA SUA CASA',
     sub: 'Economize até 95% na conta de luz',
     cta: 'Simular economia',
@@ -15,7 +15,7 @@ export const bannersData = [
   },
   {
     bg: 'from-slate-800 to-slate-900',
-    badge: 'Novidade',
+    badge: 'Novidade', //badge =  rótulo, etiqueta ou selo
     title: 'PAINEL BIFACIAL\n610W',
     sub: 'Geração dupla face — até 30% mais energia',
     cta: 'Ver produto',

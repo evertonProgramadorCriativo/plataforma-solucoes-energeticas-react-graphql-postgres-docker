@@ -56,20 +56,32 @@ function BannerCarousel() {
         key={current}
         className={`absolute inset-0 bg-gradient-to-r ${b.bg} transition-all duration-500`}
       />
-      <div
-        style={{
-          background: '#94a3b8',
-          height: 280,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-        onMouseEnter={() => setPaused(true)} // pausa no hover
-        onMouseLeave={() => setPaused(false)} // retoma ao sair
-      >
-        <p style={{ color: 'white', fontSize: 18 }}>
-          Banner {current + 1} de {total} — {paused ? ' pausado' : 'rodando'}
-        </p>
+
+      {/*
+        Imagem posicionada na metade direita do banner:
+        - w-1/2 no mobile, w-2/5 no desktop (md:w-2/5)
+        - opacity-40 mobile / opacity-60 desktop — discreta para não disputar com o texto
+        - maskImage: gradiente da direita para esquerda, criando fade suave
+        - WebkitMaskImage: prefixo necessário para Safari
+        - key={b.img} força reload da imagem ao trocar de banner
+      */}
+      <div className="absolute right-0 top-0 h-full w-1/2 md:w-2/5">
+        <img
+          key={b.img}
+          src={b.img}
+          alt={b.imgAlt}
+          className="w-full h-full object-cover opacity-40 md:opacity-60"
+          style={{
+            maskImage: 'linear-gradient(to left, rgba(0,0,0,0.9) 40%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,0.9) 40%, transparent 100%)',
+          }}
+        />
+      </div>
+
+      {/* conteúdo temporário */}
+      <div className="relative z-10 h-full flex items-center px-8">
+        {/*/badge =  rótulo, etiqueta ou selo */}
+        <p className="text-white font-bold">{b.badge}</p>
       </div>
     </div>
   );
