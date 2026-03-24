@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import FormularioCalculo from '../components/organisms/FormularioCalculo';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { bannersData } from '../data/BannerCarouselData';
 
 // BannerCarousel -> estrutura base: estado e efeito declarados, sem JSX ainda
@@ -125,8 +126,8 @@ function BannerCarousel() {
 
         {/*
           Botão CTA: cor invertida em relação ao fundo
-          textDark=true (banner claro) → botão escuro
-          textDark=false (banner escuro) → botão branco
+          textDark=true (banner claro) -> botão escuro
+          textDark=false (banner escuro) -> botão branco
         */}
         <button
           className={`flex items-center gap-2 font-bold text-sm px-5 py-2.5 rounded-full w-fit transition-all hover:scale-105 ${
@@ -138,6 +139,42 @@ function BannerCarousel() {
           {bannerArray.cta}
         </button>
       </div>
+      {/*
+        Seta esquerda: volta ao banner anterior
+        Cálculo: (current - 1 + total) % total
+        Exemplo com total=5:
+          current=0 -> (0 - 1 + 5) % 5 = 4  (volta ao último)
+          current=2 -> (2 - 1 + 5) % 5 = 1  (volta ao anterior)
+        O +total evita índice negativo
+      */}
+      <button
+        onClick={() => {
+          const prev = (current - 1 + total) % total;
+          console.log(`Seta esquerda: ${current} -> ${prev}`);
+          setCurrent(prev);
+        }}
+        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/40 transition-all z-20"
+      >
+        <ChevronLeft size={16} />
+      </button>
+
+      {/*
+        Seta direita: avança ao próximo banner
+        Cálculo: (current + 1) % total
+        Exemplo com total=5:
+          current=4 -> (4 + 1) % 5 = 0  (volta ao primeiro)
+          current=1 -> (1 + 1) % 5 = 2  (avança)
+      */}
+      <button
+        onClick={() => {
+          const next = (current + 1) % total;
+          console.log(`Seta direita: ${current} -> ${next}`);
+          setCurrent(next);
+        }}
+        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/40 transition-all z-20"
+      >
+        <ChevronRight size={16} />
+      </button>
     </div>
   );
 }
