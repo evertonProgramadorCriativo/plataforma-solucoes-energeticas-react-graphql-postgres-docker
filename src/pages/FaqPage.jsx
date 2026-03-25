@@ -10,23 +10,6 @@ const FaqPage = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [categoriaAtiva, setCategoriaAtiva] = useState('Todas');
 
-  /*
-Veja como o fluxo funciona na prática:
- Usuário clica em "Financeiro"
-O evento dispara setCategoriaAtiva('Financeiro'), atualizando o estado do componente.
- React re-renderiza automaticamente
-Sempre que um estado muda, o React recalcula o componente — sem precisar recarregar a página.
- O filter() entra em ação
-faqs.filter() roda novamente comparando 'Financeiro' === f.categoria para cada item da lista.
- Apenas os FAQs da categoria passam
-Dos 13 itens totais, somente os 3 da categoria "Financeiro" retornam.
- A lista atualiza na tela
-O usuário vê instantaneamente apenas o conteúdo relevante.
-
-O que aprendi com isso: a combinação de useState + .filter() é uma das formas mais simples e poderosas de criar interfaces reativas. Sem bibliotecas extras, sem complexidade desnecessária.
-#React #JavaScript #Frontend #WebDevelopment
-
-  */
   const faqsFiltrados = faqs.filter((f) => {
     // se for 'Todas' -> passa tudo
     // senão -> compara ex: 'Financeiro' === 'Financeiro'
