@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import FormularioCalculo from '../components/organisms/FormularioCalculo';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { bannersData } from '../data/BannerCarouselData';
+import { quickCards } from '../data/BannerCardsData';
 
 // BannerCarousel -> estrutura base: estado e efeito declarados, sem JSX ainda
 function BannerCarousel() {
@@ -13,6 +14,11 @@ function BannerCarousel() {
   // Pausa quando o mouse entra no banner (onMouseEnter -> setPaused(true))
   // Retoma quando o mouse sai (onMouseLeave -> setPaused(false))
   // Dependências: [paused, current] — reinicia o timer sempre que um desses muda
+
+  // Confirmar no console que os dados foram carregados
+  console.log('Quick cards carregados:', quickCards.length); //-> 10
+  console.log('Cards com preço:', quickCards.filter((c) => c.price).length); //-> 7
+  console.log('Cards sem tag:', quickCards.filter((c) => !c.tag).length); //-> 3
   useEffect(() => {
     if (paused) {
       //console.log('Autoplay pausado');
@@ -56,8 +62,7 @@ function BannerCarousel() {
 
   return (
     <div
-      className="relative w-full overflow-hidden"
-      style={{ height: 280 }}
+      className="relative w-full overflow-hidden h-[380px] md:h-[350px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
