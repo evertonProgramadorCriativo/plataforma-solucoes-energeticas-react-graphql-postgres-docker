@@ -4,6 +4,45 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { bannersData } from '../data/BannerCarouselData';
 import { quickCards } from '../data/BannerCardsData';
 
+// VISIBLE: quantos cards aparecem por vez na tela
+// Com 10 cards e VISIBLE=6 -> maxOffset = 10-6 = 4 posições possíveis
+const VISIBLE = 6;
+
+function CardsCarousel() {
+  // offset: índice do primeiro card visível
+  // offset=0 -> cards 0..5 | offset=1 -> cards 1..6 | offset=4 -> cards 4..9
+  const [offset, setOffset] = useState(0);
+  const maxOffset = quickCards.length - VISIBLE; // 10 - 6 = 4
+
+  // slice: pega só os 6 cards visíveis a partir do offset
+  // 0 index , 0 + 6 index
+  const visible = quickCards.slice(offset, offset + VISIBLE);
+
+  console.log(`CardsCarousel — offset: ${offset} | maxOffset: ${maxOffset}`);
+  console.log(
+    'Cards visíveis:',
+    visible.map((c) => c.label)
+  );
+
+  return (
+    <div style={{ border: '2px solid #94a3b8', padding: 16, borderRadius: 1 }}>
+      <p style={{ marginBottom: 8, color: '#64748b' }}>
+        CardsCarousel — offset: {offset} / maxOffset: {maxOffset}
+      </p>
+      <div style={{ display: 'flex', gap: 8 }}>
+        {visible.map((card, i) => (
+          <div
+            key={offset + i}
+            style={{ flex: 1, padding: 8, background: '#f1f5f9', borderRadius: 4, fontSize: 12 }}
+          >
+            {card.label}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // BannerCarousel -> estrutura base: estado e efeito declarados, sem JSX ainda
 function BannerCarousel() {
   const [current, setCurrent] = useState(0); // índice do banner ativo
@@ -16,9 +55,9 @@ function BannerCarousel() {
   // Dependências: [paused, current] — reinicia o timer sempre que um desses muda
 
   // Confirmar no console que os dados foram carregados
-  console.log('Quick cards carregados:', quickCards.length); //-> 10
-  console.log('Cards com preço:', quickCards.filter((c) => c.price).length); //-> 7
-  console.log('Cards sem tag:', quickCards.filter((c) => !c.tag).length); //-> 3
+  //console.log('Quick cards carregados:', quickCards.length); //-> 10
+  //console.log('Cards com preço:', quickCards.filter((c) => c.price).length); //-> 7
+  //console.log('Cards sem tag:', quickCards.filter((c) => !c.tag).length); //-> 3
   useEffect(() => {
     if (paused) {
       //console.log('Autoplay pausado');
@@ -214,6 +253,9 @@ const HomePage = () => {
     <div>
       {/* Banner */}
       <BannerCarousel />
+      {/*Cards 6 Banner*/}
+      <CardsCarousel />
+
       {/* Calculadora */}
       <FormularioCalculo />
     </div>
