@@ -18,18 +18,53 @@ function CardsCarousel() {
   // 0 index , 0 + 6 index
   const visible = quickCards.slice(offset, offset + VISIBLE);
 
-  console.log(`CardsCarousel — offset: ${offset} | maxOffset: ${maxOffset}`);
-  console.log(
-    'Cards visíveis:',
-    visible.map((c) => c.label)
-  );
+  // prev: volta 1 posição, mínimo 0 (não vai abaixo de 0)
+  // setOffset((o) -> o
+  //  Se offset = 2, então o = 2
+  // o - 1 = 1 = novo valor -> 1
+  // Se offset = 0, então:
+  //  o - 1 = -1
+  // Math.max(0, -1) = 0 (não deixa passar de 0)
+
+  //Isso garante que o valor nunca fique negativo.
+
+  function prev() {
+    setOffset((o) => {
+      // o = offset atual (valor anterior do estado  )
+      // o - 1 = tenta voltar uma posição no carrossel
+      // const newOffset = Math.max(0, o - 1);
+      // Isso garante que o valor nunca fique negativo.
+      const newOffset = Math.max(0, o - 1);
+      console.log(`prev: ${o} → ${newOffset}`);
+      return newOffset;
+    });
+  }
+
+  // next: avança 1 posição, máximo maxOffset (não passa dos 10 cards)
+  function next() {
+    setOffset((o) => {
+      const newOffset = Math.min(maxOffset, o + 1);
+      console.log(`next: ${o} → ${newOffset}`);
+      return newOffset;
+    });
+  }
 
   return (
-    <div style={{ border: '2px solid #94a3b8', padding: 16, borderRadius: 1 }}>
-      <p style={{ marginBottom: 8, color: '#64748b' }}>
-        CardsCarousel — offset: {offset} / maxOffset: {maxOffset}
-      </p>
+    <div style={{ border: '2px solid #94a3b8', padding: 16 }}>
+      {/* botões temporários para testar a lógica */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+        <button onClick={prev} disabled={offset === 0} style={{ padding: '4px 12px' }}>
+          prev {offset === 0 ? '(desabilitado)' : ''}
+        </button>
+        <span style={{ color: '#64748b' }}>
+          offset: {offset} / {maxOffset}
+        </span>
+        <button onClick={next} disabled={offset === maxOffset} style={{ padding: '4px 12px' }}>
+          next {offset === maxOffset ? '(desabilitado)' : ''}
+        </button>
+      </div>
       <div style={{ display: 'flex', gap: 8 }}>
+        // Mapeando os cards do array para renderizar na tela
         {visible.map((card, i) => (
           <div
             key={offset + i}
