@@ -51,19 +51,19 @@ function CardsCarousel() {
 
   return (
     <div className="relative bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden">
-      {/* botões temporários para testar a lógica */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
-        <button onClick={prev} disabled={offset === 0} style={{ padding: '4px 12px' }}>
-          {'<-'} prev {offset === 0 ? '(desabilitado)' : ''}
+      {/*
+        Seta esquerda: aparece SOMENTE se offset > 0
+        (se já está no começo, não tem para onde voltar)
+      */}
+      {offset > 0 && (
+        <button
+          onClick={prev}
+          className="absolute left-0 top-0 bottom-0 z-10 w-8 flex items-center justify-center bg-white hover:bg-slate-50 border-r border-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
+        >
+          <ChevronLeft size={18} />
         </button>
-        <span style={{ color: '#64748b' }}>
-          offset: {offset} / {maxOffset}
-        </span>
-        <button onClick={next} disabled={offset === maxOffset} style={{ padding: '4px 12px' }}>
-          {'->'} next {offset === maxOffset ? '(desabilitado)' : ''}
-        </button>
-        {'botões temporários para testar a lógica'}
-      </div>
+      )}
+
       {/* grid de cards: 6 colunas iguais (repeat(6, minmax(0, 1fr))) */}
       <div
         className="grid transition-all duration-300"
@@ -114,6 +114,18 @@ function CardsCarousel() {
           </div>
         ))}
       </div>
+      {/*
+        Seta direita: aparece SOMENTE se offset < maxOffset
+        (se já está no fim, não tem para onde avançar)
+      */}
+      {offset < maxOffset && (
+        <button
+          onClick={next}
+          className="absolute right-0 top-0 bottom-0 z-10 w-8 flex items-center justify-center bg-white hover:bg-slate-50 border-l border-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
+        >
+          <ChevronRight size={18} />
+        </button>
+      )}
     </div>
   );
 }
