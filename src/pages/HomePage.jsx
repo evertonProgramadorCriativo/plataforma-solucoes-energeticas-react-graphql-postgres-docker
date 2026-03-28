@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import FormularioCalculo from '../components/organisms/FormularioCalculo';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Truck } from 'lucide-react';
 import { bannersData } from '../data/BannerCarouselData';
 import { quickCards } from '../data/BannerCardsData';
 
@@ -50,27 +50,67 @@ function CardsCarousel() {
   }
 
   return (
-    <div style={{ border: '2px solid #94a3b8', padding: 16 }}>
+    <div className="relative bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden">
       {/* botões temporários para testar a lógica */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
         <button onClick={prev} disabled={offset === 0} style={{ padding: '4px 12px' }}>
-          prev {offset === 0 ? '(desabilitado)' : ''}
+          {'<-'} prev {offset === 0 ? '(desabilitado)' : ''}
         </button>
         <span style={{ color: '#64748b' }}>
           offset: {offset} / {maxOffset}
         </span>
         <button onClick={next} disabled={offset === maxOffset} style={{ padding: '4px 12px' }}>
-          next {offset === maxOffset ? '(desabilitado)' : ''}
+          {'->'} next {offset === maxOffset ? '(desabilitado)' : ''}
         </button>
+        {'botões temporários para testar a lógica'}
       </div>
-      <div style={{ display: 'flex', gap: 8 }}>
-        // Mapeando os cards do array para renderizar na tela
+      {/* grid de cards: 6 colunas iguais (repeat(6, minmax(0, 1fr))) */}
+      <div
+        className="grid transition-all duration-300"
+        style={{ gridTemplateColumns: `repeat(${VISIBLE}, minmax(0, 1fr))` }}
+      >
+        {/* Mapeando os cards do array para renderizar na tela */}
         {visible.map((card, i) => (
           <div
             key={offset + i}
-            style={{ flex: 1, padding: 8, background: '#f1f5f9', borderRadius: 4, fontSize: 12 }}
+            className="flex flex-col items-center p-4 border-r border-slate-100 last:border-r-0 hover:bg-slate-50 transition-colors cursor-pointer group min-h-[260px]"
           >
-            {card.label}
+            {/* label */}
+            <p className="text-sm font-semibold text-slate-700 text-center mb-3 leading-tight">
+              {card.label}
+            </p>
+
+            {/* imagem 96x96 com zoom no hover */}
+            <div className="w-24 h-24 rounded-lg overflow-hidden mb-3 bg-slate-50 flex items-center justify-center">
+              <img
+                src={card.img}
+                alt={card.label}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+
+            {/* descrição */}
+            <p className="text-xs text-slate-500 text-center leading-relaxed flex-1 mb-2">
+              {card.desc}
+            </p>
+
+            {/* preço -> renderiza só se existir (cards promocionais não têm preço) */}
+            {card.price && <p className="text-sm font-bold text-slate-800 mb-1">{card.price}</p>}
+
+            {/* tag -> renderiza só se existir, com emoji condicional */}
+            {card.tag && (
+              <p className={`text-xs font-semibold mb-2 ${card.tagColor}`}>
+                {card.tag === 'Frete grátis' ? <Truck size={16} /> : ''}
+                {card.tag}
+              </p>
+            )}
+
+            {/* botão CTA */}
+            <button
+              className={`text-xs font-semibold border border-slate-200 rounded-full px-4 py-1.5 mt-auto hover:border-blue-400 transition-colors ${card.ctaColor}`}
+            >
+              {card.cta}
+            </button>
           </div>
         ))}
       </div>
@@ -87,7 +127,7 @@ function BannerCarousel() {
   // Autoplay: avança o índice a cada 3500ms
   // Pausa quando o mouse entra no banner (onMouseEnter -> setPaused(true))
   // Retoma quando o mouse sai (onMouseLeave -> setPaused(false))
-  // Dependências: [paused, current] — reinicia o timer sempre que um desses muda
+  // Dependências: [paused, current] -> reinicia o timer sempre que um desses muda
 
   // Confirmar no console que os dados foram carregados
   //console.log('Quick cards carregados:', quickCards.length); //-> 10
@@ -98,7 +138,7 @@ function BannerCarousel() {
       //console.log('Autoplay pausado');
       return; // sai sem criar o interval
     }
-    //console.log('Autoplay rodando — banner atual:', current);
+    //console.log('Autoplay rodando -> banner atual:', current);
 
     const t = setInterval(() => {
       setCurrent((p) => {
@@ -154,7 +194,7 @@ function BannerCarousel() {
       {/*
         Imagem posicionada na metade direita do banner:
         - w-1/2 no mobile, w-2/5 no desktop (md:w-2/5)
-        - opacity-40 mobile / opacity-60 desktop — discreta para não disputar com o texto
+        - opacity-40 mobile / opacity-60 desktop -> discreta para não disputar com o texto
         - maskImage: gradiente da direita para esquerda, criando fade suave
         - WebkitMaskImage: prefixo necessário para Safari
         - key={bannerArray.img} força reload da imagem ao trocar de banner
@@ -172,7 +212,7 @@ function BannerCarousel() {
         />
       </div>
 
-      {/* Coluna de conteúdo — alinhada à esquerda, máx 512px */}
+      {/* Coluna de conteúdo -> alinhada à esquerda, máx 512px */}
       <div className="relative z-10 h-full flex flex-col justify-center px-8 md:px-12 max-w-lg">
         {/*
           Badge: pílula com ponto colorido e texto do badge
