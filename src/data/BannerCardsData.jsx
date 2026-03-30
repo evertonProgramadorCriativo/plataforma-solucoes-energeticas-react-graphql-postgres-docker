@@ -5,9 +5,11 @@ export const quickCards = [
     label: 'Frete grátis',
     img: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=200&q=70',
     desc: 'Benefício por ser sua primeira compra.',
+    price: 'R$ 890',
+    tag: 'Frete grátis',
     cta: 'Mostrar produtos',
     ctaColor: 'text-blue-600',
-    tag: null, // sem tag — não renderiza a seção de tag
+    tagColor: 'text-green-600',
   },
   {
     label: 'Painel 550W',
@@ -31,11 +33,13 @@ export const quickCards = [
   },
   {
     label: 'Menos de R$500',
-    img: 'https://images.unsplash.com/photo-1592833167665-ebf28f90e9ed?w=200&q=70',
+    img: 'https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=200&q=70',
     desc: 'Confira produtos com preços baixos.',
+    price: 'R$ 200',
+    tag: 'Frete grátis',
     cta: 'Mostrar produtos',
     ctaColor: 'text-blue-600',
-    tag: null,
+    tagColor: 'text-green-600',
   },
   {
     label: 'Bateria Lítio',
@@ -61,9 +65,11 @@ export const quickCards = [
     label: 'Mais vendidos',
     img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&q=70',
     desc: 'Explore os produtos que são tendência.',
+    price: 'R$ 320',
+    tag: 'Frete grátis',
     cta: 'Mostrar produtos',
     ctaColor: 'text-blue-600',
-    tag: null,
+    tagColor: 'text-green-600',
   },
   {
     label: 'Datalogger 4G',

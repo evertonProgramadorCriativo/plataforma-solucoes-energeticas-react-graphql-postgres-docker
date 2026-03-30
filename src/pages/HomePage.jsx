@@ -1,22 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import FormularioCalculo from '../components/organisms/FormularioCalculo';
 import { ChevronLeft, ChevronRight, Truck } from 'lucide-react';
 import { bannersData } from '../data/BannerCarouselData';
 import { quickCards } from '../data/BannerCardsData';
 
-// VISIBLE: quantos cards aparecem por vez na tela
-// Com 10 cards e VISIBLE=6 -> maxOffset = 10-6 = 4 posições possíveis
-const VISIBLE = 6;
+function useVisibleCards() {
+  const getVisible = () => {
+    //Largura da tela
+    const w = window.innerWidth;
+    if (w < 640) return 2; // mobile
+    if (w < 1024) return 4; // tablet
+    return 6; // desktop
+  };
+
+  // Cria o estado "visible" com o valor inicial calculado por getVisible()
+  // getVisible() lê window.innerWidth e retorna 2, 4 ou 6
+  // useState(getVisible) <- passa a função, não o resultado (sem os parênteses)
+  // isso evita chamar getVisible() em todo re-render, só chama 1x na montagem
+
+  const [visible, setVisible] = useState(getVisible);
+
+  useEffect(() => {
+    // handler é chamado toda vez que o usuário redimensiona a janela
+    // ele chama getVisible() de novo para calcular o novo número de cards
+    // e atualiza o estado com setVisible()
+    const handler = () => setVisible(getVisible());
+
+    // registra o handler no evento de resize do navegador
+    // a partir daqui, toda vez que a janela mudar de tamanho, handler() roda
+    window.addEventListener('resize', handler);
+    // função de cleanup: remove o listener quando o componente for desmontado
+    // sem isso, o listener ficaria ativo mesmo após o componente sumir da tela
+    // causando memory leak e erros de "setState em componente desmontado"
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
+  return visible;
+}
 
 function CardsCarousel() {
+  // VISIBLE: quantos cards aparecem por vez na tela
+  // Com 10 cards e VISIBLE=6 -> maxOffset = 10-6 = 4 posições possíveis
+  const VISIBLE = useVisibleCards();
   // offset: índice do primeiro card visível
   // offset=0 -> cards 0..5 | offset=1 -> cards 1..6 | offset=4 -> cards 4..9
   const [offset, setOffset] = useState(0);
-  const maxOffset = quickCards.length - VISIBLE; // 10 - 6 = 4
+  // Recalcula maxOffset quando VISIBLE muda
+  const maxOffset = useMemo(() => Math.max(0, quickCards.length - VISIBLE), [VISIBLE]);
 
   // slice: pega só os 6 cards visíveis a partir do offset
   // 0 index , 0 + 6 index
-  const visible = quickCards.slice(offset, offset + VISIBLE);
+  const visibleCards = quickCards.slice(offset, offset + VISIBLE);
+  // Clamp o offset ao novo maxOffset quando a tela redimensiona
+  //não vai da erro pois o valor nunca fica negativo
+  //setOffset((o) => Math.min(o, maxOffset));
+  useEffect(() => {
+    setOffset((o) => Math.min(o, maxOffset));
+  }, [maxOffset]);
 
   // prev: volta 1 posição, mínimo 0 (não vai abaixo de 0)
   // setOffset((o) -> o
@@ -70,10 +110,10 @@ function CardsCarousel() {
         style={{ gridTemplateColumns: `repeat(${VISIBLE}, minmax(0, 1fr))` }}
       >
         {/* Mapeando os cards do array para renderizar na tela */}
-        {visible.map((card, i) => (
+        {visibleCards.map((card, i) => (
           <div
             key={offset + i}
-            className="flex flex-col items-center p-4 border-r border-slate-100 last:border-r-0 hover:bg-slate-50 transition-colors cursor-pointer group min-h-[260px]"
+            className="flex flex-col items-center p-3 border-r border-slate-100 last:border-r-0 hover:bg-slate-50 transition-colors cursor-pointer group min-h-[260px]"
           >
             {/* label */}
             <p className="text-sm font-semibold text-slate-700 text-center mb-3 leading-tight">
@@ -81,11 +121,11 @@ function CardsCarousel() {
             </p>
 
             {/* imagem 96x96 com zoom no hover */}
-            <div className="w-24 h-24 rounded-lg overflow-hidden mb-3 bg-slate-50 flex items-center justify-center">
+            <div className="min-w-[220px]h-24  overflow-hidden mb-3 bg-slate-50 flex items-center justify-center">
               <img
                 src={card.img}
                 alt={card.label}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                className="w-full  h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
             </div>
 
@@ -341,8 +381,9 @@ const HomePage = () => {
       {/* Banner */}
       <BannerCarousel />
       {/*Cards 6 Banner*/}
-      <CardsCarousel />
-
+      <div className="max-w-6xl mx-auto px-4 mt-4 mb-6">
+        <CardsCarousel />
+      </div>
       {/* Calculadora */}
       <FormularioCalculo />
     </div>
