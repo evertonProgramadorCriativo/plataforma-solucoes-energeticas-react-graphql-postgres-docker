@@ -1,7 +1,174 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import FormularioCalculo from '../components/organisms/FormularioCalculo';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Truck } from 'lucide-react';
 import { bannersData } from '../data/BannerCarouselData';
+import { quickCards } from '../data/BannerCardsData';
+
+function useVisibleCards() {
+  const getVisible = () => {
+    //Largura da tela
+    const w = window.innerWidth;
+    if (w < 640) return 2; // mobile
+    if (w < 1024) return 4; // tablet
+    return 6; // desktop
+  };
+
+  // Cria o estado "visible" com o valor inicial calculado por getVisible()
+  // getVisible() lê window.innerWidth e retorna 2, 4 ou 6
+  // useState(getVisible) <- passa a função, não o resultado (sem os parênteses)
+  // isso evita chamar getVisible() em todo re-render, só chama 1x na montagem
+
+  const [visible, setVisible] = useState(getVisible);
+
+  useEffect(() => {
+    // handler é chamado toda vez que o usuário redimensiona a janela
+    // ele chama getVisible() de novo para calcular o novo número de cards
+    // e atualiza o estado com setVisible()
+    const handler = () => setVisible(getVisible());
+
+    // registra o handler no evento de resize do navegador
+    // a partir daqui, toda vez que a janela mudar de tamanho, handler() roda
+    window.addEventListener('resize', handler);
+    // função de cleanup: remove o listener quando o componente for desmontado
+    // sem isso, o listener ficaria ativo mesmo após o componente sumir da tela
+    // causando memory leak e erros de "setState em componente desmontado"
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
+  return visible;
+}
+
+function CardsCarousel() {
+  // VISIBLE: quantos cards aparecem por vez na tela
+  // Com 10 cards e VISIBLE=6 -> maxOffset = 10-6 = 4 posições possíveis
+  const VISIBLE = useVisibleCards();
+  // offset: índice do primeiro card visível
+  // offset=0 -> cards 0..5 | offset=1 -> cards 1..6 | offset=4 -> cards 4..9
+  const [offset, setOffset] = useState(0);
+  // Recalcula maxOffset quando VISIBLE muda
+  const maxOffset = useMemo(() => Math.max(0, quickCards.length - VISIBLE), [VISIBLE]);
+
+  // slice: pega só os 6 cards visíveis a partir do offset
+  // 0 index , 0 + 6 index
+  const visibleCards = quickCards.slice(offset, offset + VISIBLE);
+  // Clamp o offset ao novo maxOffset quando a tela redimensiona
+  //não vai da erro pois o valor nunca fica negativo
+  //setOffset((o) => Math.min(o, maxOffset));
+  useEffect(() => {
+    setOffset((o) => Math.min(o, maxOffset));
+  }, [maxOffset]);
+
+  // prev: volta 1 posição, mínimo 0 (não vai abaixo de 0)
+  // setOffset((o) -> o
+  //  Se offset = 2, então o = 2
+  // o - 1 = 1 = novo valor -> 1
+  // Se offset = 0, então:
+  //  o - 1 = -1
+  // Math.max(0, -1) = 0 (não deixa passar de 0)
+
+  //Isso garante que o valor nunca fique negativo.
+
+  function prev() {
+    setOffset((o) => {
+      // o = offset atual (valor anterior do estado  )
+      // o - 1 = tenta voltar uma posição no carrossel
+      // const newOffset = Math.max(0, o - 1);
+      // Isso garante que o valor nunca fique negativo.
+      const newOffset = Math.max(0, o - 1);
+      console.log(`prev: ${o} → ${newOffset}`);
+      return newOffset;
+    });
+  }
+
+  // next: avança 1 posição, máximo maxOffset (não passa dos 10 cards)
+  function next() {
+    setOffset((o) => {
+      const newOffset = Math.min(maxOffset, o + 1);
+      console.log(`next: ${o} → ${newOffset}`);
+      return newOffset;
+    });
+  }
+
+  return (
+    <div className="relative bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden">
+      {/*
+        Seta esquerda: aparece SOMENTE se offset > 0
+        (se já está no começo, não tem para onde voltar)
+      */}
+      {offset > 0 && (
+        <button
+          onClick={prev}
+          className="absolute left-0 top-0 bottom-0 z-10 w-8 flex items-center justify-center bg-white hover:bg-slate-50 border-r border-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
+        >
+          <ChevronLeft size={18} />
+        </button>
+      )}
+
+      {/* grid de cards: 6 colunas iguais (repeat(6, minmax(0, 1fr))) */}
+      <div
+        className="grid transition-all duration-300"
+        style={{ gridTemplateColumns: `repeat(${VISIBLE}, minmax(0, 1fr))` }}
+      >
+        {/* Mapeando os cards do array para renderizar na tela */}
+        {visibleCards.map((card, i) => (
+          <div
+            key={offset + i}
+            className="flex flex-col items-center p-3 border-r border-slate-100 last:border-r-0 hover:bg-slate-50 transition-colors cursor-pointer group min-h-[260px]"
+          >
+            {/* label */}
+            <p className="text-sm font-semibold text-slate-700 text-center mb-3 leading-tight">
+              {card.label}
+            </p>
+
+            {/* imagem 96x96 com zoom no hover */}
+            <div className="min-w-[220px]h-24  overflow-hidden mb-3 bg-slate-50 flex items-center justify-center">
+              <img
+                src={card.img}
+                alt={card.label}
+                className="w-full  h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+
+            {/* descrição */}
+            <p className="text-xs text-slate-500 text-center leading-relaxed flex-1 mb-2">
+              {card.desc}
+            </p>
+
+            {/* preço -> renderiza só se existir (cards promocionais não têm preço) */}
+            {card.price && <p className="text-sm font-bold text-slate-800 mb-1">{card.price}</p>}
+
+            {/* tag -> renderiza só se existir, com emoji condicional */}
+            {card.tag && (
+              <p className={`text-xs font-semibold mb-2 ${card.tagColor}`}>
+                {card.tag === 'Frete grátis' ? <Truck size={16} /> : ''}
+                {card.tag}
+              </p>
+            )}
+
+            {/* botão CTA */}
+            <button
+              className={`text-xs font-semibold border border-slate-200 rounded-full px-4 py-1.5 mt-auto hover:border-blue-400 transition-colors ${card.ctaColor}`}
+            >
+              {card.cta}
+            </button>
+          </div>
+        ))}
+      </div>
+      {/*
+        Seta direita: aparece SOMENTE se offset < maxOffset
+        (se já está no fim, não tem para onde avançar)
+      */}
+      {offset < maxOffset && (
+        <button
+          onClick={next}
+          className="absolute right-0 top-0 bottom-0 z-10 w-8 flex items-center justify-center bg-white hover:bg-slate-50 border-l border-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
+        >
+          <ChevronRight size={18} />
+        </button>
+      )}
+    </div>
+  );
+}
 
 // BannerCarousel -> estrutura base: estado e efeito declarados, sem JSX ainda
 function BannerCarousel() {
@@ -12,13 +179,18 @@ function BannerCarousel() {
   // Autoplay: avança o índice a cada 3500ms
   // Pausa quando o mouse entra no banner (onMouseEnter -> setPaused(true))
   // Retoma quando o mouse sai (onMouseLeave -> setPaused(false))
-  // Dependências: [paused, current] — reinicia o timer sempre que um desses muda
+  // Dependências: [paused, current] -> reinicia o timer sempre que um desses muda
+
+  // Confirmar no console que os dados foram carregados
+  //console.log('Quick cards carregados:', quickCards.length); //-> 10
+  //console.log('Cards com preço:', quickCards.filter((c) => c.price).length); //-> 7
+  //console.log('Cards sem tag:', quickCards.filter((c) => !c.tag).length); //-> 3
   useEffect(() => {
     if (paused) {
       //console.log('Autoplay pausado');
       return; // sai sem criar o interval
     }
-    //console.log('Autoplay rodando — banner atual:', current);
+    //console.log('Autoplay rodando -> banner atual:', current);
 
     const t = setInterval(() => {
       setCurrent((p) => {
@@ -56,8 +228,7 @@ function BannerCarousel() {
 
   return (
     <div
-      className="relative w-full overflow-hidden"
-      style={{ height: 280 }}
+      className="relative w-full overflow-hidden h-[380px] md:h-[350px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -75,7 +246,7 @@ function BannerCarousel() {
       {/*
         Imagem posicionada na metade direita do banner:
         - w-1/2 no mobile, w-2/5 no desktop (md:w-2/5)
-        - opacity-40 mobile / opacity-60 desktop — discreta para não disputar com o texto
+        - opacity-40 mobile / opacity-60 desktop -> discreta para não disputar com o texto
         - maskImage: gradiente da direita para esquerda, criando fade suave
         - WebkitMaskImage: prefixo necessário para Safari
         - key={bannerArray.img} força reload da imagem ao trocar de banner
@@ -93,7 +264,7 @@ function BannerCarousel() {
         />
       </div>
 
-      {/* Coluna de conteúdo — alinhada à esquerda, máx 512px */}
+      {/* Coluna de conteúdo -> alinhada à esquerda, máx 512px */}
       <div className="relative z-10 h-full flex flex-col justify-center px-8 md:px-12 max-w-lg">
         {/*
           Badge: pílula com ponto colorido e texto do badge
@@ -209,6 +380,10 @@ const HomePage = () => {
     <div>
       {/* Banner */}
       <BannerCarousel />
+      {/*Cards 6 Banner*/}
+      <div className="max-w-6xl mx-auto px-4 mt-4 mb-6">
+        <CardsCarousel />
+      </div>
       {/* Calculadora */}
       <FormularioCalculo />
     </div>
