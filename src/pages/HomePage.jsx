@@ -8,7 +8,8 @@ function useVisibleCards() {
   const getVisible = () => {
     //Largura da tela
     const w = window.innerWidth;
-    if (w < 640) return 2; // mobile
+    if (w < 550) return 1; // mobile Vertical
+    if (w < 640) return 2; // mobile Horizontal
     if (w < 1024) return 4; // tablet
     return 6; // desktop
   };
@@ -147,7 +148,7 @@ function CardsCarousel() {
 
             {/* botão CTA */}
             <button
-              className={`text-xs font-semibold border border-slate-200 rounded-full px-4 py-1.5 mt-auto hover:border-blue-400 transition-colors ${card.ctaColor}`}
+              className={`text-white bg-green-600 w-28 px-2 py-1.5 mt-auto rounded-lg hover:bg-green-700 hover:-translate-y-0.5 transition-all duration-300  `}
             >
               {card.cta}
             </button>
@@ -324,7 +325,7 @@ function BannerCarousel() {
           //console.log(`Seta esquerda: ${current} -> ${prev}`);
           setCurrent(prev);
         }}
-        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/40 transition-all z-20"
+        className="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm   items-center justify-center text-white hover:bg-white/40 transition-all z-20"
       >
         <ChevronLeft size={16} />
       </button>
@@ -342,7 +343,7 @@ function BannerCarousel() {
           // console.log(`Seta direita: ${current} -> ${next}`);
           setCurrent(next);
         }}
-        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/40 transition-all z-20"
+        className="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm   items-center justify-center text-white hover:bg-white/40 transition-all z-20"
       >
         <ChevronRight size={16} />
       </button>

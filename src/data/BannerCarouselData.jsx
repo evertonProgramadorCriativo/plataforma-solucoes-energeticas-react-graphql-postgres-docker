@@ -17,7 +17,7 @@ export const bannersData = [
     bg: 'from-slate-800 to-slate-900',
     badge: 'Novidade', //badge =  rótulo, etiqueta ou selo
     title: 'PAINEL BIFACIAL\n610W',
-    sub: 'Geração dupla face — até 30% mais energia',
+    sub: 'Geração dupla face,até 30% mais energia',
     cta: 'Ver produto',
     tag: 'Até 30 anos de garantia',
     img: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=700&q=80',
