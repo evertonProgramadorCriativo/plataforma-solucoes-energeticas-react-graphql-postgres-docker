@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import process from 'process';
 
 export default defineConfig(({ mode }) => {
+  // Carrega as variáveis do .env (incluindo RESEND_API_KEY) para process.env
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
@@ -32,6 +33,9 @@ export default defineConfig(({ mode }) => {
           '**/index.css',
         ],
       },
-    },
+    },'/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
   };
 });
