@@ -20,14 +20,14 @@ app.post('/api/send-email', async (req, res) => {
 
   try {
     await resend.emails.send({
-      from: 'onboarding@resend.dev', // use este no plano free
+      from: 'empresaenergiaclarake.com', // use este no plano free
       to: ownerEmail,
       subject: `Novo formulário: ${formName}`,
       html: `<pre>${JSON.stringify(payload, null, 2)}</pre>`,
     });
 
     await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: 'empresaenergiaclarake.com',
       to: userEmail,
       subject: 'Recebemos sua mensagem — Calarke Energia',
       html: `<p>Olá, ${payload.nome}! Retornamos em até 24h.</p>`,
