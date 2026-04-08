@@ -9,32 +9,7 @@ import FaqPage from './pages/FaqPage';
 import SobrePage from './pages/SobrePage';
 import SuportePage from './pages/SuportePage';
 import CarreiraPage from './pages/CarreiraPage';
-import { FormProvider, useFormContext } from './context/FormContext';
-function TestComponent() {
-  const { forms, updateField, resetForm } = useFormContext();
-
-  return (
-    // Componente de teste para verificar se o contexto funciona
-    <div>
-      <h2>Teste Formulário</h2>
-
-      <input
-        placeholder="Nome"
-        value={forms.contato.nome}
-        onChange={(e) => updateField('contato', 'nome', e.target.value)}
-      />
-      <input
-        placeholder="Email"
-        value={forms.contato.email}
-        onChange={(e) => updateField('contato', 'email', e.target.value)}
-      />
-      <p>Nome digitado: {forms.contato.nome}</p>
-      <p>Email digitado: {forms.contato.email}</p>
-
-      <button onClick={() => resetForm('contato')}>Resetar</button>
-    </div>
-  );
-}
+import { FormProvider } from './context/FormContext';
 
 function App() {
   return (
@@ -42,9 +17,6 @@ function App() {
       <BrowserRouter>
         <div className="min-h-screen bg-white-50 flex flex-col">
           <Header />
-          {/* Componente de teste para verificar se o contexto funciona */}
-          <TestComponent />
-
           <main className=" w-full  mx-auto flex-1">
             <Routes>
               <Route path="/" element={<HomePage />} />
